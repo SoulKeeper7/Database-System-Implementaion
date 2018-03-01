@@ -6,11 +6,11 @@ ifdef linux
 tag = -n
 endif
 
-test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o HeapFile.o GenericDBFileBaseClass.o  y.tab.o lex.yy.o test.o
-	$(CC) -o test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o  DBFile.o HeapFile.o  GenericDBFileBaseClass.o  y.tab.o lex.yy.o test.o -lfl -lpthread
+test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o Pipe.o DBFile.o HeapFile.o GenericDBFileBaseClass.o BigQ.o y.tab.o lex.yy.o test.o
+	$(CC) -o test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o Pipe.o DBFile.o HeapFile.o GenericDBFileBaseClass.o BigQ.o y.tab.o lex.yy.o test.o -lfl -lpthread
 	
-main: Record.o Comparison.o ComparisonEngine.o Schema.o File.o Pipe.o DBFile.o HeapFile.o  GenericDBFileBaseClass.o   y.tab.o lex.yy.o main.o
-	$(CC) -o main Record.o Comparison.o ComparisonEngine.o Schema.o File.o  DBFile.o HeapFile.o  GenericDBFileBaseClass.o  y.tab.o lex.yy.o main.o thread1 -lfl -lpthread
+main: Record.o Comparison.o ComparisonEngine.o Schema.o File.o Pipe.o DBFile.o HeapFile.o GenericDBFileBaseClass.o  BigQ.o y.tab.o lex.yy.o main.o
+	$(CC) -o main Record.o Comparison.o ComparisonEngine.o Schema.o File.o Pipe.o DBFile.o HeapFile.o GenericDBFileBaseClass.o BigQ.o y.tab.o lex.yy.o main.o thread1 -lfl -lpthread
 	
 test.o: test.cc
 	$(CC) -g -c test.cc 
@@ -27,12 +27,14 @@ Comparison.o: Comparison.cc
 ComparisonEngine.o: ComparisonEngine.cc
 	$(CC) -g -c ComparisonEngine.cc	
 
+BigQ.o: BigQ.cc
+	$(CC) -g -c BigQ.cc	
+
+Pipe.o: Pipe.cc
+	$(CC) -g -c Pipe.cc	
 	
 GenericDBFileBaseClass.o: GenericDBFileBaseClass.cc
 	$(CC) -g -c GenericDBFileBaseClass.cc
-	
-SortedFile.o: SortedFile.cc
-	$(CC) -g -c SortedFile.cc
 
 HeapFile.o: HeapFile.cc
 	$(CC) -g -c HeapFile.cc

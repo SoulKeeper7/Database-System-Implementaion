@@ -11,6 +11,8 @@
 // than right, depending upon the OrderMaker
 int ComparisonEngine :: Compare(Record *left, Record *right, OrderMaker *orderUs) {
 
+
+
 	char *val1, *val2;
 
 	char *left_bits = left->GetBits();
@@ -19,7 +21,7 @@ int ComparisonEngine :: Compare(Record *left, Record *right, OrderMaker *orderUs
 	for (int i = 0; i < orderUs->numAtts; i++) {
 		val1 = left_bits + ((int *) left_bits)[orderUs->whichAtts[i] + 1];
 		val2 = right_bits + ((int *) right_bits)[orderUs->whichAtts[i] + 1];
-	
+		// cout<<"yaha tak sahi hai";
 		// these are used to store the two operands, depending on their type
 		int val1Int, val2Int;
 		double val1Double, val2Double;
@@ -29,7 +31,7 @@ int ComparisonEngine :: Compare(Record *left, Record *right, OrderMaker *orderUs
 	
 			// first case: we are dealing with integers
 			case Int:
-	
+			
 			// cast the two bit strings to ints
 			val1Int = *((int *) val1);
 			val2Int = *((int *) val2);

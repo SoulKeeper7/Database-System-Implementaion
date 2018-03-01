@@ -13,6 +13,7 @@
 Page :: Page () {
 	curSizeInBytes = sizeof (int);
 	numRecs = 0;
+	currentRecord = 0;
 
 	myRecs = new (std::nothrow) TwoWayList<Record>;
 	if (myRecs == NULL)
@@ -26,7 +27,37 @@ Page :: ~Page () {
 	delete myRecs;
 }
 
+Record* Page::gettherecord()
+{
+	
+	Record *firstOne = myRecs->Current(currentRecord);	
+	currentRecord++;
+	return firstOne;
+}
+int Page::GetNumRecs() {
+	return numRecs;
+}
+int Page::checkLength()
+{
+	if ( currentRecord >=GetNumRecs() )
+		return 0;
+	return 1;
+}
+void Page::settherecord()
+{
+	myRecs->MoveToStart();
+	currentRecord = 0;
 
+	//Record* r1 = myRecs->Current(0);
+	//currentRecord++;
+	//Schema m("catalog", "lineitem");	//r1->Print(&m);
+
+
+}
+void Page::MoveToTheFirstRecord(Record *movetofisrst)
+{
+	myRecs->MoveToStart();
+}
 void Page :: EmptyItOut () {
 
 	// get rid of all of the records

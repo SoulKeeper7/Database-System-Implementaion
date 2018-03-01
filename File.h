@@ -17,6 +17,7 @@ private:
 	
 	int numRecs;
 	int curSizeInBytes;
+	int currentRecord ;
 
 public:
 	// constructor
@@ -25,7 +26,15 @@ public:
 
 	// this takes a page and writes its binary representation to bits
 	void ToBinary (char *bits);
+	
+	void MoveToTheFirstRecord(Record * movetofisrst);
 
+	Record* gettherecord();
+	int GetNumRecs();
+	
+	int checkLength();
+	
+	void settherecord();
 	// this takes a binary representation of a page and gets the
 	// records from it
 	void FromBinary (char *bits);

@@ -87,39 +87,79 @@ extern int YYPARSE_DECL();
 #define Int 262
 #define YYERRCODE 256
 static const short yylhs[] = {                           -1,
-    0,    0,    1,    1,    2,    4,    4,    4,    3,    3,
-    3,    3,
+    0,    0,    1,    1,    2,    2,    4,    4,    4,    3,
+    3,    3,    3,
 };
 static const short yylen[] = {                            2,
     5,    3,    3,    1,    3,    1,    1,    1,    1,    1,
-    1,    1,
+    1,    1,    1,
 };
 static const short yydefred[] = {                         0,
-    0,    0,   12,    9,   10,   11,    0,    0,    0,    0,
-    0,    6,    7,    8,    0,    0,    3,    5,    1,
+    0,    0,   13,   10,   11,   12,    0,    0,    0,    0,
+    0,    7,    8,    9,    0,    0,    3,    5,    1,
 };
 static const short yydgoto[] = {                          2,
     7,    8,    9,   15,
 };
-static const short yysindex[] = {                       -33,
- -259,    0,    0,    0,    0,    0,  -32, -249,  -56, -248,
- -259,    0,    0,    0, -259,  -33,    0,    0,    0,
+static const short yysindex[] = {                       -32,
+ -258,    0,    0,    0,    0,    0,  -31, -248,  -55, -247,
+ -258,    0,    0,    0, -258,  -32,    0,    0,    0,
 };
 static const short yyrindex[] = {                         0,
-    0,    0,    0,    0,    0,    0,    0,  -30,    0,   12,
+    0,    0,    0,    0,    0,    0,    0,  -29,  -41,   13,
     0,    0,    0,    0,    0,    0,    0,    0,    0,
 };
-static const short yygindex[] = {                        -3,
-    3,    0,    1,    0,
+static const short yygindex[] = {                        -2,
+    4,    0,    1,    0,
 };
-#define YYTABLESIZE 16
-static const short yytable[] = {                          3,
-    4,    5,    6,   12,   14,   13,    1,   11,   10,   16,
-    4,    2,   19,   17,    0,   18,
+#define YYTABLESIZE 216
+static const short yytable[] = {                          6,
+    3,    4,    5,    6,   12,   14,   13,    1,   11,   10,
+   16,    4,    2,   19,   17,   18,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    6,
 };
-static const short yycheck[] = {                        259,
-  260,  261,  262,   60,   61,   62,   40,  257,   41,  258,
-   41,    0,   16,   11,   -1,   15,
+static const short yycheck[] = {                         41,
+  259,  260,  261,  262,   60,   61,   62,   40,  257,   41,
+  258,   41,    0,   16,   11,   15,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,  257,
 };
 #define YYFINAL 2
 #ifndef YYDEBUG
@@ -146,6 +186,7 @@ static const char *yyrule[] = {
 "OrList : Condition OR OrList",
 "OrList : Condition",
 "Condition : Literal Op Literal",
+"Condition : Literal",
 "Op : '<'",
 "Op : '>'",
 "Op : '='",
@@ -190,9 +231,9 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 162 "Parser.y"
+#line 169 "Parser.y"
 
-#line 194 "y.tab.c"
+#line 235 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -448,11 +489,12 @@ case 5:
 }
 break;
 case 6:
-#line 107 "Parser.y"
+#line 106 "Parser.y"
 	{
-	/* construct and send up the comparison*/
 	yyval.myComparison = (struct ComparisonOp *) malloc (sizeof (struct ComparisonOp));
-	yyval.myComparison->code = LESS_THAN;
+	yyval.myComparison->code = EQUALS;
+	yyval.myComparison->left = yystack.l_mark[0].myOperand;
+	yyval.myComparison->right = yystack.l_mark[0].myOperand;
 }
 break;
 case 7:
@@ -460,7 +502,7 @@ case 7:
 	{
 	/* construct and send up the comparison*/
 	yyval.myComparison = (struct ComparisonOp *) malloc (sizeof (struct ComparisonOp));
-	yyval.myComparison->code = GREATER_THAN;
+	yyval.myComparison->code = LESS_THAN;
 }
 break;
 case 8:
@@ -468,11 +510,19 @@ case 8:
 	{
 	/* construct and send up the comparison*/
 	yyval.myComparison = (struct ComparisonOp *) malloc (sizeof (struct ComparisonOp));
-	yyval.myComparison->code = EQUALS;
+	yyval.myComparison->code = GREATER_THAN;
 }
 break;
 case 9:
-#line 129 "Parser.y"
+#line 128 "Parser.y"
+	{
+	/* construct and send up the comparison*/
+	yyval.myComparison = (struct ComparisonOp *) malloc (sizeof (struct ComparisonOp));
+	yyval.myComparison->code = EQUALS;
+}
+break;
+case 10:
+#line 136 "Parser.y"
 	{
 	/* construct and send up the operand containing the string*/
 	yyval.myOperand = (struct Operand *) malloc (sizeof (struct Operand));
@@ -480,8 +530,8 @@ case 9:
 	yyval.myOperand->value = yystack.l_mark[0].actualChars;
 }
 break;
-case 10:
-#line 137 "Parser.y"
+case 11:
+#line 144 "Parser.y"
 	{
 	/* construct and send up the operand containing the FP number*/
 	yyval.myOperand = (struct Operand *) malloc (sizeof (struct Operand));
@@ -489,8 +539,8 @@ case 10:
 	yyval.myOperand->value = yystack.l_mark[0].actualChars;
 }
 break;
-case 11:
-#line 145 "Parser.y"
+case 12:
+#line 152 "Parser.y"
 	{
 	/* construct and send up the operand containing the integer*/
 	yyval.myOperand = (struct Operand *) malloc (sizeof (struct Operand));
@@ -498,8 +548,8 @@ case 11:
 	yyval.myOperand->value = yystack.l_mark[0].actualChars;
 }
 break;
-case 12:
-#line 153 "Parser.y"
+case 13:
+#line 160 "Parser.y"
 	{
 	/* construct and send up the operand containing the name */
 	yyval.myOperand = (struct Operand *) malloc (sizeof (struct Operand));
@@ -507,7 +557,7 @@ case 12:
 	yyval.myOperand->value = yystack.l_mark[0].actualChars;
 }
 break;
-#line 509 "y.tab.c"
+#line 559 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
