@@ -26,11 +26,11 @@ public:
 
 	void GetFirstRecord(Record & fetchme);
 
-	int Open(const char * f_path);
+	int Open( char * f_path);
 
-	int Create(const char * fpath, void * startup);
+	int Create( char * fpath,fType ftype, void * startup);
 
-
+	bool isEmpty();
 	void Load(Schema & myschema, char * loadpath);
 
 };

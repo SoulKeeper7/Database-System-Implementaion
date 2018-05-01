@@ -53,7 +53,8 @@ void HeapFile::Add(Record& addme) {
 			
 			int currlen = theFile->GetLength(); // get the file length
 			int whichpage = currlen == 0 ? 0 : currlen - 1; // the page number to be added
-			curPage = new Page();
+			//curPage = new Page();
+			curPage->EmptyItOut();
 			theFile->AddPage(curPage, whichpage);
 			theFile->GetPage(curPage, whichpage);
 			curPage->Append(&addme);
@@ -85,6 +86,13 @@ int HeapFile::GetNext(Record &fetchme, CNF &cnf, Record &literal) {
   return 0;
 }
 
+bool HeapFile::isEmpty()
+{
+		return (theFile->GetLength() == 0 && curPage->GetNumRecs() == 0 && tempPage->GetNumRecs() == 0);
+	//}
+
+}
+
 void HeapFile::Load(Schema& myschema, char* loadpath)
 {
 	FILE* ifp = fopen(loadpath, "r");
@@ -97,9 +105,7 @@ void HeapFile::Load(Schema& myschema, char* loadpath)
 		Add(next);
 
 	}
-	//int currlen = theFile->GetLength();
-	//int whichpage = currlen == 0 ? 0 : currlen - 1;
-	//theFile->AddPage(curPage, whichpage);
+	
 }
 int HeapFile::GetNext(Record& fetchme) 
 {
@@ -127,13 +133,13 @@ void HeapFile::GetFirstRecord(Record& fetchme) {
 	curPage->MoveToTheFirstRecord(&fetchme);
 	
 }
-int HeapFile::Open(const char *f_path) {
+int HeapFile::Open( char *f_path) {
 	
 	theFile->Open(1, f_path);
 	return 1;
 }
 
-int HeapFile::Create(const char* fpath, void* startup) {
+int HeapFile::Create( char* fpath,fType ftype, void* startup) {
 	theFile->Open(0, fpath);
 	return 1;
 }

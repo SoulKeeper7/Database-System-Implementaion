@@ -3,16 +3,17 @@
 
 #include "DBFile.h"
 #include "HeapFile.h"
+#include "SortedFile.h"
 
 
 
 
-int GenericDBFileBaseClass::Create(const char* fpath, void* startup) {
+int GenericDBFileBaseClass::Create( char* fpath,fType ftype, void* startup) {
 	
 	return 1;
 }
 
-int GenericDBFileBaseClass::Open(const char* fpath) {
+int GenericDBFileBaseClass::Open( char* fpath) {
 	
 	return 1;
 }

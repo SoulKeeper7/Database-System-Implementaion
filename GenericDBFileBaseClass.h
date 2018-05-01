@@ -16,8 +16,8 @@ public:
 
 
 
-	virtual int Create(const char* fpath, void* startup);
-	virtual int Open(const char* fpath);
+	virtual int Create( char* fpath,fType ftype, void* startup);
+	virtual int Open( char* fpath);
 	virtual int Close() = 0;
 
 	virtual void Add(Record& addme) = 0;

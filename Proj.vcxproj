@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{A395330F-4DBB-407E-B890-5B22335455D6}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="a1-test.cc" />
+    <ClCompile Include="a2-test.cc" />
+    <ClCompile Include="a3.cc" />
+    <ClCompile Include="a4-1.cc" />
+    <ClCompile Include="BigQ.cc" />
+    <ClCompile Include="Comparison.cc" />
+    <ClCompile Include="ComparisonEngine.cc" />
+    <ClCompile Include="DBFile.cc" />
+    <ClCompile Include="File.cc" />
+    <ClCompile Include="Function.cc" />
+    <ClCompile Include="GenericDBFileBaseClass.cc" />
+    <ClCompile Include="HeapFile.cc" />
+    <ClCompile Include="lex.yy.c" />
+    <ClCompile Include="lex.yyfunc.c" />
+    <ClCompile Include="main.cc" />
+    <ClCompile Include="Pipe.cc" />
+    <ClCompile Include="Record.cc" />
+    <ClCompile Include="RelOp.cc" />
+    <ClCompile Include="Schema.cc" />
+    <ClCompile Include="SortedFile.cc" />
+    <ClCompile Include="Statistics.cc" />
+    <ClCompile Include="TwoWayList.cc" />
+    <ClCompile Include="y.tab.c" />
+    <ClCompile Include="yyfunc.tab.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="a1-test.h" />
+    <ClInclude Include="a2-test.h" />
+    <ClInclude Include="myUtils.h" />
+    <ClInclude Include="BigQ.h" />
+    <ClInclude Include="Comparison.h" />
+    <ClInclude Include="ComparisonEngine.h" />
+    <ClInclude Include="DBFile.h" />
+    <ClInclude Include="Defs.h" />
+    <ClInclude Include="Dup.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="GenericDBFileBaseClass.h" />
+    <ClInclude Include="RelOpNode.h" />
+    <ClInclude Include="GroupBy.h" />
+    <ClInclude Include="HeapFile.h" />
+    <ClInclude Include="JoinNode.h" />
+    <ClInclude Include="ParseFunc.h" />
+    <ClInclude Include="ParseTree.h" />
+    <ClInclude Include="Pipe.h" />
+    <ClInclude Include="Proje.h" />
+    <ClInclude Include="Record.h" />
+    <ClInclude Include="RelOp.h" />
+    <ClInclude Include="Schema.h" />
+    <ClInclude Include="SelcFile.h" />
+    <ClInclude Include="SelPipe.h" />
+    <ClInclude Include="SortedFile.h" />
+    <ClInclude Include="Statistics.h" />
+    <ClInclude Include="Sum.h" />
+    <ClInclude Include="TwoWayList.h" />
+    <ClInclude Include="y.tab.h" />
+    <ClInclude Include="yyfunc.tab.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lineitem.bin" />
+    <None Include="nation.bin" />
+    <None Include="region.bin" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -3,9 +3,9 @@
 
 #include <stdio.h>
 #include <sys/types.h>
-#include <sys/stat.h>
+//#include <sys/stat.h>
 #include <fcntl.h>
-
+#include <iostream>
 #include "Defs.h"
 #include "ParseTree.h"
 #include "Record.h"
@@ -14,7 +14,7 @@
 #include "Comparison.h"
 #include "ComparisonEngine.h"
 
-
+using namespace std;
 
 // Basic record data structure. Data is actually stored in "bits" field. The layout of bits is as follows:
 //	1) First sizeof(int) bytes: length of the record in bytes
@@ -28,12 +28,13 @@ friend class ComparisonEngine;
 friend class Page;
 
 private:
-	char *bits;
+	
 	char* GetBits ();
 	void SetBits (char *bits);
 	void CopyBits(char *bits, int b_len);
 
 public:
+	char *bits;
 	Record ();
 	~Record();
 
@@ -45,6 +46,8 @@ public:
 	// expensive (requiring a bit-by-bit copy) than Consume, which is
 	// only a pointer operation
 	void Copy (Record *copyMe);
+
+	int ComposeRecord(Schema * mySchema, const char * src);
 
 	// reads the next record from a pointer to a text file; also requires
 	// that the schema be given; returns a 0 if there is no data left or
@@ -62,9 +65,17 @@ public:
 	void MergeRecords (Record *left, Record *right, int numAttsLeft, 
 		int numAttsRight, int *attsToKeep, int numAttsToKeep, int startOfRight);
 
+	void FilePrint(FILE * fp, Schema * mySchema);
+
 	// prints the contents of the record; this requires
 	// that the schema also be given so that the record can be interpreted
 	void Print (Schema *mySchema);
+	void Print(Schema * mySchema, std::ostream & out);
+		int GetNumAtts() {
+		int Att1Start = ((int *)bits)[1];
+		int numAtts = Att1Start / sizeof(int) - 1;
+		return numAtts;
+	}
 };
 
 #endif

@@ -1,0 +1,2 @@
+Sum: [265499], o_orderdate: [1998-01-24], o_shippriority: [0], l_orderkey: [71]
+6

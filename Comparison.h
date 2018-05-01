@@ -1,11 +1,23 @@
 #ifndef COMPARISON_H
 #define COMPARISON_H
-
+#include <iostream>
 #include "Record.h"
 #include "Schema.h"
 #include "File.h"
 #include "Comparison.h"
 #include "ComparisonEngine.h"
+#include <fstream>
+
+typedef struct {
+	int attNo;
+	Type attType;
+} myAtt;
+
+typedef struct
+{
+	int attNo;
+	Type attType;
+} attNoAndType;
 
 
 // This stores an individual comparison that is part of a CNF
@@ -36,32 +48,8 @@ public:
 
 
 class Schema;
-
-// This structure encapsulates a sort order for records
-class OrderMaker {
-
-	friend class ComparisonEngine;
-	friend class CNF;
-
-	int numAtts;
-
-	int whichAtts[MAX_ANDS];
-	Type whichTypes[MAX_ANDS];
-
-public:
-	
-	// creates an empty OrdermMaker
-	OrderMaker();
-
-	// create an OrderMaker that can be used to sort records
-	// based upon ALL of their attributes
-	OrderMaker(Schema *schema);
-
-	// print to the screen
-	void Print ();
-};
-
 class Record;
+class OrderMaker;
 
 // This structure stores a CNF expression that is to be evaluated
 // during query execution
@@ -98,6 +86,49 @@ public:
         void GrowFromParseTree (struct AndList *parseTree, Schema *mySchema, 
 		Record &literal);
 
+		int queryOrderMaker(const OrderMaker & actual, OrderMaker & binSearch_order, OrderMaker & literal_order);
+
 };
+
+
+
+// This structure encapsulates a sort order for records
+class OrderMaker {
+
+	friend class ComparisonEngine;
+	friend class CNF;
+
+	int numAtts;
+
+	int whichAtts[MAX_ANDS];
+	Type whichTypes[MAX_ANDS];
+
+public:
+
+	void queryOrderMaker(OrderMaker &sortOrder, CNF &query, OrderMaker &queryorder, OrderMaker & cnforder);
+
+	int findAttrIn(int att, CNF &query);
+
+	void initOrderMaker(int numAtts, attNoAndType * myAtts);
+
+	// creates an empty OrdermMaker
+	OrderMaker();
+
+	// create an OrderMaker that can be used to sort records
+	// based upon ALL of their attributes
+	OrderMaker(Schema *schema);
+
+	// print to the screen
+	void Print();
+	void FilePrint(std::ofstream &fileout);
+	void makeordermaker(std::ifstream & ifs);
+	void GetAttsList(int AttsList[]);
+	int Add(int attIndex, Type attType);
+	int GetNumAtts()
+	{
+		return numAtts;
+	}
+};
+
 
 #endif

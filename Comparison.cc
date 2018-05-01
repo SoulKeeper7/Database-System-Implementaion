@@ -2,7 +2,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
-
+#include <fstream>
+#include<sstream>
 #include "Comparison.h"
 
 
@@ -63,13 +64,22 @@ void Comparison :: Print () {
 }
 
 
+void OrderMaker::initOrderMaker(int numAtts, attNoAndType* myAtts)
+{
+	this->numAtts = numAtts;
+	for (int i = 0; i<numAtts; i++) {
+		whichAtts[i] = myAtts[i].attNo;
+		whichTypes[i] = myAtts[i].attType;
+	}
+}
 
 
 OrderMaker :: OrderMaker() {
 	numAtts = 0;
 }
 
-OrderMaker :: OrderMaker(Schema *schema) {
+OrderMaker :: OrderMaker(Schema *schema) 
+{
 	numAtts = 0;
 
 	int n = schema->GetNumAtts();
@@ -102,6 +112,64 @@ OrderMaker :: OrderMaker(Schema *schema) {
         }
 }
 
+void OrderMaker::FilePrint(std::ofstream &fileout) {
+	fileout << numAtts << endl;
+	for (int i = 0; i < numAtts; i++)
+	{
+		fileout << whichAtts[i] << endl;
+		if (whichTypes[i] == Int)
+			fileout << "Int" << endl;
+		else if (whichTypes[i] == Double)
+			fileout << "Double" << endl;
+		else
+			fileout << "String" << endl;
+	}
+
+}
+
+void OrderMaker::makeordermaker(ifstream &ifs) {
+	string line;
+
+	getline(ifs, line); 
+	std::stringstream ss(line);
+	ss >> numAtts;
+
+	for (int i = 0; i<numAtts; i++) {
+		getline(ifs, line); 
+		std::stringstream s_str(line);
+		s_str >> whichAtts[i];
+		getline(ifs, line); 
+		if (line.compare("Int") == 0) {
+			whichTypes[i] = Int;
+		}
+		else if (line.compare("Double") == 0) {
+			whichTypes[i] = Double;
+		}
+		else if (line.compare("String") == 0) {
+			whichTypes[i] = String;
+		}
+	}	
+}
+
+void OrderMaker::GetAttsList(int AttsList[])
+{
+	for (int i = 0; i < numAtts; i++) {
+		AttsList[i] = whichAtts[i];
+	}
+}
+
+int OrderMaker::Add(int attIndex, Type attType) {
+	if (numAtts < MAX_ANDS) {
+		whichAtts[numAtts] = attIndex;
+		whichTypes[numAtts] = attType;
+		numAtts++;
+	}
+	else
+	{		
+		return 0;
+	}
+	return 1;
+}
 
 void OrderMaker :: Print () {
 	printf("NumAtts = %5d\n", numAtts);
@@ -175,6 +243,7 @@ int CNF :: GetSortOrders (OrderMaker &left, OrderMaker &right) {
 	
 	return left.numAtts;
 }
+
 
 
 void CNF :: Print () {
@@ -612,5 +681,65 @@ void CNF :: GrowFromParseTree (struct AndList *parseTree, Schema *mySchema,
 	remove("sdafdsfFFDSDA");
 	remove("hkljdfgkSDFSDF");
 }
+
+int CNF::queryOrderMaker(const OrderMaker &actual, OrderMaker &binSearch_order,	OrderMaker &literal_order)
+{
+	int i, j;
+	binSearch_order.numAtts = 0;
+
+	for (i = 0; i<actual.numAtts; i++)	
+	{
+		bool attributefound = false;
+		for (j = 0; j<numAnds && !attributefound; j++) 
+		{
+			int literalWhichAtt, binaryWhichAtt;
+			Type whichType;
+			Comparison compobject = orList[j][0];
+			if (orLens[j] != 1 || compobject.op !=Equals)	
+			{	
+				continue;
+			}
+
+			if (compobject.operand1 == Literal)
+			{
+				literalWhichAtt = compobject.whichAtt1;
+				binaryWhichAtt = compobject.whichAtt2;
+			}
+			else if (compobject.operand2 == Literal)
+			{
+				literalWhichAtt = compobject.whichAtt2;
+				binaryWhichAtt = compobject.whichAtt1;
+			}
+			else
+			{
+				cerr << "One literal should be present" << endl;
+			}
+
+			whichType = actual.whichTypes[i];
+
+
+			if (actual.whichAtts[i] == binaryWhichAtt) 
+			{
+				attributefound = true;			
+				binSearch_order.whichAtts[i] = binaryWhichAtt;
+				binSearch_order.whichTypes[i] = whichType;
+				literal_order.whichAtts[i] = literalWhichAtt;
+				literal_order.whichTypes[i] = whichType;
+				binSearch_order.numAtts++;
+				literal_order.numAtts++;
+			}
+
+
+		}
+
+		if (!attributefound)
+		{
+			break;
+		}
+	}
+
+	return 1;
+}
+
 
 

@@ -18,8 +18,8 @@ public:
 	DBFile();
 	~DBFile();
 
-	int Create(const char* fpath, fType ftype, void* startup);
-	int Open(const char* fpath);
+	int Create( char* fpath, fType ftype, void* startup);
+	int Open( char* fpath);
 	int Close();
 
 	void Add(Record& addme);

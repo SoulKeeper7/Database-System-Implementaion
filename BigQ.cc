@@ -34,8 +34,10 @@ void* worker_Thread(void* arg)
 
 	int runlength = 0;
 	int runscounter = 0;
+	int counc = 0;
 	while (in->Remove(&myRecord))
 	{
+		counc++;
 		///removed the record
 		Record *recordcopy = new Record;
 		recordcopy->Copy(&myRecord);
@@ -125,7 +127,7 @@ void* worker_Thread(void* arg)
 
 
 	}
-
+	int x = 0;
 	while (!p_queue.empty())
 	{
 
@@ -139,28 +141,26 @@ void* worker_Thread(void* arg)
 
 		if (Recordsperrun[Run_no_of_poped_record] >0)
 		{
-			if ((page_array[Run_no_of_poped_record]->GetFirst(next)))
+			if (!(page_array[Run_no_of_poped_record]->GetFirst(next)))
 			{
-				p_queue.push(next);
-				m_record[next] = Run_no_of_poped_record;
-
-			}
-			else
-			{
+				
 				page_array[Run_no_of_poped_record] = new Page();
 				page_index[Run_no_of_poped_record] = page_index[Run_no_of_poped_record] + 1;
 				myFile.GetPage(page_array[Run_no_of_poped_record], page_index[Run_no_of_poped_record]);
 				page_array[Run_no_of_poped_record]->GetFirst(next);
-				p_queue.push(next);
-				m_record[next] = Run_no_of_poped_record;
+				
 			}
+			p_queue.push(next);
+			m_record[next] = Run_no_of_poped_record;
 
 
 		}
-
+		x++;
 		out->Insert(newrecord);
 
 	}
+	//cout << "inputputqueue" << counc << endl;
+	//cout << "outputqueue" << x << endl;;
 	myFile.Close();
 	remove(temp_file); //Deleting the temp file
 	out->ShutDown();
@@ -215,7 +215,7 @@ BigQ::BigQ(Pipe &in, Pipe &out, OrderMaker &sortorder, int runlen) {
 	
 	pthread_t Worker_Thread;
 
-	cout << "\ninitialting worker thread\n";
+	//cout << "\ninitialting worker thread\n";
 	int ret = pthread_create(&Worker_Thread, NULL, worker_Thread, (void*)info);
 
 }

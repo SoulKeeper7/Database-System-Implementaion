@@ -1,23 +1,70 @@
 #include <fstream>
 
-
+#include<iostream>
 #include "DBFile.h"
 #include "HeapFile.h"
 #include "GenericDBFileBaseClass.h"
+#include "SortedFile.h"
 //#include "SortedFile.h"
 
 using std::string;
 using std::ifstream;
 using std::ofstream;
 
-int DBFile::Create(const char* fpath, fType ftype, void* startup) {
+int DBFile::Create( char* fpath, fType ftype, void* startup) 
+{
 	
-	Genricdb = new HeapFile;
-	return Genricdb->Create(fpath, startup);
-}
+	//Genricdb = new HeapFile;
+	//return Genricdb->Create(fpath, startup);
+	std::cout<<"metafile creted";
+	char file_tbl_path[100];
+    sprintf (file_tbl_path, "%s.meta", fpath);
+	ofstream out(file_tbl_path);
+		std::cout<<"metafile creted---------->";
+	
+	switch(ftype)
+	{
+		case 0:Genricdb = new HeapFile();
+			out << "heap" << endl;
+			break;
+		case 1:Genricdb = new SortedFile();
+		break;
+	}
+		return Genricdb->Create(fpath, ftype, startup);;
+	}
+    
+	
 
-int DBFile::Open(const char* fpath) {
-	Genricdb = new HeapFile;
+int DBFile::Open( char* fpath)
+ {
+	//Genricdb = new HeapFile;
+	//return Genricdb->Open(fpath);
+	
+		char file_tbl_path[100];
+        string line;
+        sprintf (file_tbl_path, "%s.meta", fpath);
+		ifstream myfile (file_tbl_path);
+		//myfile << "sorted" << endl;
+	if (myfile.is_open()) 
+	{
+		if (getline (myfile,line)) 
+		{
+		    if (line.compare("heap") == 0) 
+			{			
+	        	Genricdb = new HeapFile();
+		    }
+			else if (line.compare("sorted") == 0) 
+			{
+			
+	       		Genricdb = new SortedFile();
+		   // Genricdb
+			}
+		}
+	}
+	else
+	{
+		Genricdb = new HeapFile();
+	}
 	return Genricdb->Open(fpath);
 }
 
@@ -47,7 +94,7 @@ int DBFile::GetNext(Record& fetchme, CNF& cnf, Record& literal) {
 }
 
 DBFile::DBFile() {}
-DBFile::~DBFile() { }//delete Genricdb; }
+DBFile::~DBFile() { delete Genricdb; }
 
 
 
