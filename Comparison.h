@@ -124,6 +124,9 @@ public:
 	void makeordermaker(std::ifstream & ifs);
 	void GetAttsList(int AttsList[]);
 	int Add(int attIndex, Type attType);
+	int ADDSortingAtt(SortedAttList *satts, Schema *s);
+	//int ADDSortingAtt(NameList * satts, Schema * s);
+	//int ADDSortingAtt(NameList satts, Schema s);
 	int GetNumAtts()
 	{
 		return numAtts;

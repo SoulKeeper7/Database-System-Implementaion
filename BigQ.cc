@@ -71,6 +71,10 @@ void* worker_Thread(void* arg)
 			}
 
 		}
+		recordcopy = NULL;
+		delete recordcopy;
+		//myRecord = NULL;
+
 	}
 
 	if (recordsVector.size()>0)
@@ -111,6 +115,8 @@ void* worker_Thread(void* arg)
 
 
 	int page_num = 0;
+
+	
 
 
 	for (int i = 0; i<runscount; i++) {
@@ -157,13 +163,35 @@ void* worker_Thread(void* arg)
 		}
 		x++;
 		out->Insert(newrecord);
+		newrecord = NULL;
+		delete newrecord;
 
 	}
+
+	//int j = 0;
+	/*for (int i = 0; i < runscount; i++)
+	{
+		page_array[i]->EmptyItOut();
+	}*/
+	/*while (page_array[j])
+	{
+		page_array[j]->EmptyItOut();
+		j++;
+	}*/
+	
 	//cout << "inputputqueue" << counc << endl;
 	//cout << "outputqueue" << x << endl;;
 	myFile.Close();
 	remove(temp_file); //Deleting the temp file
 	out->ShutDown();
+	//priority_queue<Record*, vector<Record*>, Sort_Merge> p_queue(&sortorder);
+	 //delete myFile;
+	//page_array.clear();
+
+	//int* page_index = new int[runscount];
+
+
+
 
 
 
@@ -179,9 +207,14 @@ void writeToDisk(std::vector<Record *> &recordsVector, Page &sortPage, File &myF
 			int currlen = myFile.GetLength();
 			int whichpage = currlen == 0 ? 0 : currlen - 1;
 			myFile.AddPage(&sortPage, whichpage);
-			sortPage.EmptyItOut();
+			sortPage.EmptyItOut();	
+			//delete &sortPage;
+			//Record x;
+			//x.Copy(recordsVector[i]);
 			sortPage.Append(recordsVector[i]);
 			runlength++;
+			
+
 		}
 
 	}
@@ -194,6 +227,12 @@ void writeToDisk(std::vector<Record *> &recordsVector, Page &sortPage, File &myF
 		sortPage.EmptyItOut();
 		runlength++;
 	}
+
+	for (int i = 0; i < recordsVector.size(); i++)
+	{
+		delete recordsVector[i];
+	}
+	
 }
 
 
@@ -217,6 +256,7 @@ BigQ::BigQ(Pipe &in, Pipe &out, OrderMaker &sortorder, int runlen) {
 
 	//cout << "\ninitialting worker thread\n";
 	int ret = pthread_create(&Worker_Thread, NULL, worker_Thread, (void*)info);
+	//pthread_join(Worker_Thread,NULL);
 
 }
 
@@ -225,7 +265,9 @@ BigQ::BigQ(Pipe &in, Pipe &out, OrderMaker &sortorder, int runlen) {
 
 
 
-BigQ::~BigQ() {
+BigQ::~BigQ()
+{
+	//myFile.clear();
 }
 
 

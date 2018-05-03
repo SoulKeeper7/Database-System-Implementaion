@@ -171,6 +171,26 @@ int OrderMaker::Add(int attIndex, Type attType) {
 	return 1;
 }
 
+int OrderMaker::ADDSortingAtt(SortedAttList *satts, Schema *s)
+{
+	int i = 0;
+	while (satts != NULL)
+	{
+		int res = s->Find(satts->name);
+		Type restype = s->FindType(satts->name);
+		if (res != -1)
+		{
+			//orm->Add(res, resty)
+				whichAtts[i] = res;
+				whichTypes[i] = restype;
+				i++;
+		}
+		satts = satts->next;
+	}
+	numAtts = i;
+	return 1;
+}
+
 void OrderMaker :: Print () {
 	printf("NumAtts = %5d\n", numAtts);
 	for (int i = 0; i < numAtts; i++)

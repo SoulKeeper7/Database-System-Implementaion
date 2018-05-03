@@ -9,8 +9,9 @@
 #include "HeapFile.h"
 
 
-HeapFile::~HeapFile() {
-	
+HeapFile::~HeapFile()
+{
+	delete theFile;
 }
 HeapFile::HeapFile() {
 	off_t curPageIdx = 0;
@@ -114,6 +115,8 @@ int HeapFile::GetNext(Record& fetchme)
 	{
 		Record *x = curPage->gettherecord();
 		fetchme.Copy(x);
+		x = NULL;
+		delete x;
 		return 1;
 	}
 	else if(++curPageIdx <= theFile->lastIndex())
@@ -123,6 +126,8 @@ int HeapFile::GetNext(Record& fetchme)
 		curPage->settherecord();
 		Record *x = curPage->gettherecord();
 		fetchme.Copy(x);
+		x = NULL;
+		delete x;
 		return 1;
 	}
 	return 0;

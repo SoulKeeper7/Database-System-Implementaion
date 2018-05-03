@@ -57,6 +57,7 @@ public:
 		cout << "output " << pipeID;
 		sum.WaitUntilDone();
 		cout << "closing " << pipeID;
+
 	}
 
 };

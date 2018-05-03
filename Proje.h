@@ -63,6 +63,7 @@ private:
 
 	~ProjectNode() 
 	{
+		//delete P;
 	};
 
 	void Print() 
@@ -80,8 +81,7 @@ private:
 	};
 	void Run()
 	{
-		//dbfile.Open(rel->path());
-		//dbfile.MoveFirst();
+		
 		P.Use_n_Pages(100);
 		P.Run(*(left->outpipe), *outpipe, keepMe, numAttsIn, numAttsOut);
 	};
@@ -89,7 +89,8 @@ private:
 	void WaitUntilDone()
 	{
 		P.WaitUntilDone();
-		//dbfile.Close();
+
+		
 	}
 
 	

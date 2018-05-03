@@ -115,18 +115,18 @@ public:
 		
 	};
 
-	void Run() {
-		// cout << "join started" << endl; // debug
+	void Run() 
+	{
 		J.Use_n_Pages(100);
-		J.Run(*(left->outpipe), *(right->outpipe), *outpipe, cnf, literal); // Join takes its input from its left and
-																				 // right children's outpipes
+		J.Run(*(left->outpipe), *(right->outpipe), *outpipe, cnf, literal); 
 	};
 
 	void WaitUntilDone() {
-		// cout << "join ended" << endl; // debug
+		
 		cout << "output " << pipeID;
 		J.WaitUntilDone();
 		cout << "closing " << pipeID;
+		//delete outpipe;
 	}
 
 

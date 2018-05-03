@@ -1,0 +1,7 @@
+Sum: [65084.8], o_orderdate: [1994-04-17], o_shippriority: [0], l_orderkey: [96]
+Sum: [105700], o_orderdate: [1995-03-18], o_shippriority: [0], l_orderkey: [65]
+Sum: [242184], o_orderdate: [1995-10-23], o_shippriority: [0], l_orderkey: [35]
+Sum: [68290], o_orderdate: [1995-11-03], o_shippriority: [0], l_orderkey: [36]
+Sum: [80882.4], o_orderdate: [1996-08-21], o_shippriority: [0], l_orderkey: [38]
+Sum: [160012], o_orderdate: [1996-12-19], o_shippriority: [0], l_orderkey: [67]
+Sum: [265499], o_orderdate: [1998-01-24], o_shippriority: [0], l_orderkey: [71]

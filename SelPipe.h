@@ -54,6 +54,7 @@ public:
 	void WaitUntilDone()
 	{
 		mySelPipe.WaitUntilDone();
+
 	};
 	
 };

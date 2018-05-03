@@ -61,6 +61,7 @@ class SelectFile : public RelationalOp {
 	void Run (DBFile &inFile, Pipe &outPipe, CNF &selOp, Record &literal);
 	void WaitUntilDone ();
 	void Use_n_Pages (int n);
+	//SelectFile::~SelectFile();
 
 };
 

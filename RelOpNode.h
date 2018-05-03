@@ -18,8 +18,11 @@ public:
 	Pipe* outpipe = new Pipe(100);
 	int pipeID;	
 
-	virtual Schema* schema() {};
-	virtual ~RelOpNode() {};
+	virtual Schema* schema(){};
+	virtual ~RelOpNode() 
+	{
+		
+	};
 	virtual void Print() {};
 	virtual void Run() {};
 	virtual void WaitUntilDone() {};

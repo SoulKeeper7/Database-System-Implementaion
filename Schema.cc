@@ -188,7 +188,8 @@ Schema::Schema( char *fName,  char *relName) {
 	int totscans = 1;
 
 	// see if the file starts with the correct keyword
-	if (strcmp(space, "BEGIN")) {
+	if (strcmp(space, "BEGIN"))
+	{
 		cout << "Unfortunately, this does not seem to be a schema file.\n";
 		exit(1);
 	}
@@ -218,7 +219,9 @@ Schema::Schema( char *fName,  char *relName) {
 
 			// otherwise, got the correct file!!
 		}
-		else {
+		else
+		{
+
 			break;
 		}
 	}

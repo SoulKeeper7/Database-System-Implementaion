@@ -130,14 +130,14 @@ void setup ()
 	cout << " heap files dir: \t" << dbfile_dir << endl;
 	cout << " \n\n";
 	
-	s = new relation (supplier, new Schema (catalog_path, supplier), dbfile_dir);
+	/*s = new relation (supplier, new Schema (catalog_path, supplier), dbfile_dir);
 	p = new relation (part, new Schema (catalog_path, part), dbfile_dir);
 	ps = new relation (partsupp, new Schema (catalog_path, partsupp), dbfile_dir);
 	n = new relation (nation, new Schema (catalog_path, nation), dbfile_dir);
 	l = new relation (lineitem, new Schema (catalog_path, lineitem), dbfile_dir);
 	r = new relation (region, new Schema (catalog_path, region), dbfile_dir);
 	o = new relation (orders, new Schema (catalog_path, orders), dbfile_dir);
-	c = new relation (customer, new Schema (catalog_path, customer), dbfile_dir);
+	c = new relation (customer, new Schema (catalog_path, customer), dbfile_dir);*/
 	//cout << "yaha ho raha hai";
 }
 

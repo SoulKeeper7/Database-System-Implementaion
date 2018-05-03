@@ -16,6 +16,8 @@ using namespace std;
 
 class BigQ {
 
+private:
+	//pthread_t Worker_Thread;
 public:
  //OrderMaker
 	File myFile;

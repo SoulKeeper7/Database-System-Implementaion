@@ -195,6 +195,7 @@ void * join_run_thread(void *arg)
 			{
 				if ((pipeNotEmptyL && pipeNotEmptyR) && ce.Compare(&fromleft, &forLeft, &fromright, &forRight) < 0)//(&fromFile, &fromPipe, myOrder) > 0) {
 				{
+					
 					pipeNotEmptyL = outL->Remove(&fromleft);
 				}
 				else if ((pipeNotEmptyL && pipeNotEmptyR) && ce.Compare(&fromleft, &forLeft, &fromright, &forRight) > 0)
@@ -225,6 +226,7 @@ void * join_run_thread(void *arg)
 								y.Copy(new Record(fromright));
 								MergeRecord.MergeRecords(rec_vector[i], &y, numAttsLeft, numAttsRight, attsToKeep, numtokeep, startOfRight);
 								out->Insert(&MergeRecord);
+								
 
 								count = count + 1;
 								if (count == 800000)
@@ -269,6 +271,7 @@ void * join_run_thread(void *arg)
 	}
 	else
 	{
+		cout << "amit" << endl;
 		std::vector <Record*> rec_vector1;
 		std::vector <Record*> rec_vector2;
 		while (pipeNotEmptyL)
@@ -297,10 +300,11 @@ void * join_run_thread(void *arg)
 			}
 		}
 	}
-
+	
 
 	outL->ShutDown();
 	outR->ShutDown();
+	
 	out->ShutDown();
 }
 void Join::Run(Pipe & inPipeL, Pipe & inPipeR, Pipe & outPipe, CNF & selOp, Record & literal)

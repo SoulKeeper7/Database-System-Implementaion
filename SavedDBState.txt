@@ -4,4 +4,5 @@ nation
 orders
 part
 partsupp
+region
 supplier

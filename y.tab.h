@@ -102,7 +102,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 32 "Parser.y" /* yacc.c:1909  */
+#line 33 "Parser.y" /* yacc.c:1909  */
 
  	struct FuncOperand *myOperand;
 	struct FuncOperator *myOperator; 
@@ -114,10 +114,13 @@ union YYSTYPE
 	struct OrList *myOrList;
 	struct AndList *myAndList;
 	struct NameList *myNames;
+	struct SortedAttList *mySortAttList;
+	
 	char *actualChars;
 	char whichOne;
+	
 
-#line 121 "y.tab.h" /* yacc.c:1909  */
+#line 124 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

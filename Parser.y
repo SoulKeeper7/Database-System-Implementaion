@@ -22,6 +22,7 @@
     struct SchemaList *schemas; // the list of tables and aliases in the query
 	struct CreateTableType* createTableType; // type of table to create along with sorting attributes (if any)	
 	char * LoadfileName;
+	
 	char *OutFileName="STDOUT";
 	int NumAtt=0;
  
@@ -40,8 +41,11 @@
 	struct OrList *myOrList;
 	struct AndList *myAndList;
 	struct NameList *myNames;
+	struct SortedAttList *mySortAttList;
+	
 	char *actualChars;
 	char whichOne;
+	
 }
 
 %token <actualChars> Name
@@ -83,6 +87,8 @@
 %type <myNames> Atts
 %type <tableType> TableType
 %type <myAndList> SortingAtts
+%type <mySortAttList> SortedAttList
+
 
 %start COMMANDLINE
 
@@ -132,34 +138,26 @@ TableType: Name // for heap
 {
   $$ = (struct CreateTableType *) malloc (sizeof (struct CreateTableType));
   $$->heapOrSorted = $1;
-  $$->sortingAtts = NULL;
+  $$->sortedAttList = NULL;
 }
-| Name ON AndList // for sorted
+| Name ON SortedAttList // for sorted
 {
   $$ = (struct CreateTableType *) malloc (sizeof (struct CreateTableType));
   $$->heapOrSorted = $1;
-  $$->sortingAtts = $3;
+  $$->sortedAttList = $3;
 };
 
-SortingAtts: '(' OrList ')'
+SortedAttList: Name
 {
-	// just return the OrList!
-	$$ = (struct AndList *) malloc (sizeof (struct AndList));
-	$$->left = $2;
-	$$->rightAnd = NULL;
+	$$ = (struct SortedAttList *) malloc (sizeof (struct SortedAttList));
+	$$->name = $1;
+	$$->next = NULL;
 }
-
-| '(' OrList ')' AND AndList
+| SortedAttList ',' Name
 {
-	// here we need to pre-pend the OrList to the AndList
-	// first we allocate space for this node
-	$$ = (struct AndList *) malloc (sizeof (struct AndList));
-
-	// hang the OrList off of the left
-	$$->left = $2;
-
-	// hang the AndList off of the right
-	$$->rightAnd = $5;
+	$$ = (struct SortedAttList *) malloc (sizeof (struct SortedAttList));
+	$$->name = $3;
+	$$->next = $1;
 };
 
 Schema: Name Name

@@ -35,6 +35,9 @@ public:
 
 	~SeleFileNode()
 	{
+		dbfile.Close();
+		//delete mysel;
+		delete myrel;
 	};
 
 	void Print()
@@ -59,7 +62,8 @@ public:
 	void WaitUntilDone()
 	{
 		mysel.WaitUntilDone();
-		dbfile.Close();
+
+	
 	}
 	
 };

@@ -32,7 +32,7 @@ public:
 
 	bool isEmpty();
 	void Load(Schema & myschema, char * loadpath);
-
+	
 };
 
 #endif

@@ -35,6 +35,8 @@ map<string, RelOpNode*> GenTreeHash;
 RelOpNode* QueryRoot; // after executing queryPlanning the main root node						
 map<string, string> relationAlias;
 map<string, string> joinedNodesAlias;
+RelOpNode* deleteQueryRoot = NULL;;
+
 
 void ConvertOperand(struct Operand *Op) 
 {
@@ -230,6 +232,7 @@ void InOrderPrintQTree(RelOpNode* currentNode)
 int clear_pipe(Pipe &in_pipe, Schema *schema, bool print) {
 	Record rec;
 	int cnt = 0;
+	ofstream ou(OutFileName);
 	while (in_pipe.Remove(&rec)) {
 		if (print && (strcmp(OutFileName,"STDOUT")==0))
 		{
@@ -237,8 +240,9 @@ int clear_pipe(Pipe &in_pipe, Schema *schema, bool print) {
 		}
 		else if(strcmp(OutFileName, "NONE")!=0)
 		{
-			ofstream ou(OutFileName);
+			
 			//out(OutFileName);
+			
 			rec.Print(schema, ou);
 
 		}
@@ -441,7 +445,7 @@ void QueryOptimizer(struct AndList *&andList, TableList *tableList, Statistics &
 		}
 		tableList = tableList->next;
 	}
-
+	//GenTreeHash.clear();
 	struct AndList *StartNode; // starting node of the new constructed query/andlist
 	int pipeID = 0;
 	GreedilyEvalAndList(StartNode, NULL, andList, stat, pipeID);
@@ -464,6 +468,7 @@ void QueryOptimizer(struct AndList *&andList, TableList *tableList, Statistics &
 	}
 	new DupRemNode(distinctAtts, distinctFunc, root, pipeID);
 	QueryRoot = root;
+	//deleteQueryRoot = root;
 }
 
 void PostOrderRun(RelOpNode* currentNode) {
@@ -484,7 +489,31 @@ void PostOrderWait(RelOpNode* currentNode) {
 	PostOrderWait(currentNode->right);
 	currentNode->WaitUntilDone();
 }
-
+void deleteTree(RelOpNode *currentNode)
+{
+	if (currentNode==NULL) {
+		return;
+	}
+	deleteTree(currentNode->left);
+	deleteTree(currentNode->right);
+	//if (currentNode->left !=NULL)
+	//{
+	//	delete currentNode->outpipe;
+	//	
+	//	
+	//	//delete currentNode->left->outpipe;
+	//	//currentNode->left = NULL;
+	//}
+	//if (currentNode->right !=NULL)
+	//{
+	//	delete currentNode->outpipe;
+	//	//delete (currentNode->right)->outpipe;
+	//	//currentNode->right = NULL;
+	//}
+	//currentNode = NULL;
+	delete currentNode;
+	
+}
 
 void queryExecution() 
 {
@@ -492,25 +521,29 @@ void queryExecution()
 	cout << "          Starting query execution";
 	cout << endl << "--------------------------------------------" << endl;
 
-	// Run() ALL the nodes before you call WaitUntilDone() on ANY of them
+	
 	PostOrderRun(QueryRoot);
-
-	// At this point, all the nodes have been Run(). We must, therefore,
-	// start clearing the root node's output pipe so data can start flowing
-	// upwards through the tree
-	int cnt = clear_pipe(*(QueryRoot->outpipe), QueryRoot->schema(), true);
-
+	
+	int cnt = clear_pipe(*(QueryRoot->outpipe), QueryRoot->schema(), true);	
 	PostOrderWait(QueryRoot);
 
+	
 	cout << "\nQuery returned " << cnt << " records \n";
 	cout << endl << "--------------------------------------------" << endl;
 	cout << "           Query execution done";
 	cout << endl << "--------------------------------------------" << endl;
+
+	GenTreeHash.clear();
+	
+	deleteTree(QueryRoot);
+	 QueryRoot =NULL;
+	
 }
  void RunQuery()
 {
 	struct TableList * iter = tables;
-
+	DBinfo.clear();
+	aliastotable.clear();
 	while (iter != NULL)
 	{
 		DBinfo[iter->aliasAs] = DBinfo[iter->tableName];
@@ -534,13 +567,114 @@ void queryExecution()
 	
 
 }
+ void updateCatalog(string relname)
+ {
+	// FILE *foo = fopen(catalog_path, "r");
+	 ifstream infile;
+	 infile.open(catalog_path);
+
+	 // this is enough space to hold any tokens
+	 //char space[200];
+	 string space;
+
+	 getline(infile, space);
+	 int totscans = 1;
+
+	 // see if the file starts with the correct keyword
+	 
+	 if (strcmp((char*)space.c_str(), "BEGIN")) 
+	 {
+		 //cout << "Unfortunately, this does not seem to be a schema file.\n";
+		 
+		 //exit(1);
+	 }
+	 char tempPath[100] = "tempfile.txt";
+	 ofstream outfile;
+	 outfile.open(tempPath, ios::out);
+	 outfile << endl;
+	 int count = 0;
+	 
+	 while (1)
+	 {
+
+		 if (!getline(infile, space))
+		 {
+			 //outfile << space << endl;
+			 break;
+		 }
+		 string tmp = space;
+		 /*else
+		 {
+			 outfile << space << endl;
+		 }*/
+
+		 
+		 getline(infile, space);
+		 if (strcmp((char*)space.c_str(), (char*)relname.c_str()))
+		 {
+			 outfile << tmp << endl;
+			 outfile << space << endl;
+			 			 
+			 while (1)
+			 {
+				 
+				 // suck up another token
+				 if (!getline(infile, space))
+				 {
+					 break;
+				 }
+
+				 if (!strcmp((char*)space.c_str(), "\0"))
+				 {
+					 outfile << space << endl;
+					 break;
+					 //cerr << "Could not find the schema for the specified relation.\n";
+					 //exit(1);
+				 }
+				 else
+				 {
+					 outfile << space << endl;
+				 }
+
+			 }
+
+			 // otherwise, got the correct file!!
+		 }
+		 else
+		 {
+
+			 while (getline(infile, space))
+			 {
+				 //fscanf(foo, "%s", space);
+				 // suck up another token
+					
+					 if (!strcmp(space.c_str(), "\0"))
+					 {
+						 break;
+						 
+					 }
+				 
+			 }
+		 }
+	 }	
+
+	//outfile << endl;
+	
+	outfile.close();
+	infile.close();
+
+	 remove(catalog_path);
+
+	 rename(tempPath, catalog_path);
+
+ 
+	 
+	
+ }
 
  void UpdateSavedstate()
  {
 	 remove(Savedstate);
-	// ifstream input(Savedstate);	 
-	 //input.clear();
-	 //input.close();
 	 
 	 ofstream outpu;
 	 outpu.open(Savedstate);
@@ -554,14 +688,55 @@ void queryExecution()
  }
  void CreateTable()
 {	 
+	 std::ofstream out;
+
+	 // std::ios::app is the open mode "append" meaning
+	 // new data will be written to the end of the file.
+	 if (createdrelationlist.find(tables->tableName) != createdrelationlist.end())
+	 {
+
+		 cout << "table with the same name already exists!" << endl;
+		 return;
+	 }
+	 out.open(catalog_path, std::ios::app);
+	 std::string str = "I am here.";
+	 out << "BEGIN"<<endl;
+	 out << tables->tableName<<endl;
+	 string x  = (string)tables->tableName + "." + "tbl";
+	 out << x <<endl;
+
+	 
+	 while (schemas)
+	 {
+		 string c;
+		 if (!strcmp(schemas->type, "INTEGER"))
+		 {
+			 c = "Int";
+		 }
+		 else if (!(strcmp(schemas->type, "DOUBLE")))
+		 {
+			 c = "Double";
+		 }
+		 else if (!(strcmp(schemas->type, "STRING")))
+		 {
+			 c = "String";
+		 }
+		 out << schemas->attName << " " << c << endl;
+		 schemas = schemas->next;
+	 }
+
+	 out << "END"<<endl;
+	 out << endl;
+
+	 out.close();
+	 Schema *s = new Schema(catalog_path, tables->tableName);
+	 relation *myrel = new relation((char *)tables->tableName,s , dbfile_dir);
+	 createdrelationlist.insert({ tables->tableName,myrel });
+
+
 	 char *relationName = tables->tableName;
 	 
-	 if (createdrelationlist.find(relationName) != createdrelationlist.end())
-	 {
-		 
-		 cout << "table with the same name already exists!" << endl;
-		 return;		  
-	 }
+	 
 
 	 Attribute creatatbleatt [NumAtt];
 	 int i = 0;
@@ -587,7 +762,7 @@ void queryExecution()
 	 } 
 	 
 	 DBFile dbfile;
-	 relation * myrel = new relation(relationName, new Schema(relationName, NumAtt, creatatbleatt), dbfile_dir);	 
+	 //relation * myrel = new relation(relationName, new Schema(relationName, NumAtt, creatatbleatt), dbfile_dir);	 
 	 char db_path[100]; 
 	 if (strcmp(createTableType->heapOrSorted, "HEAP") == 0)
 	 {
@@ -598,24 +773,19 @@ void queryExecution()
 	 }
 	 else if (strcmp(createTableType->heapOrSorted, "SORTED") == 0)
 	 {
-		 if (createTableType->sortingAtts == NULL) 
+		 if (createTableType->sortedAttList == NULL) 
 		 {
 			 cout << "Please enter sorting attributes." << endl << endl;
 			 return;
 		 }
 		 else
-		 {
-			 cout << "SORTED DBFile will be placed at " << myrel->path() << "..." << endl;
-			 int runlen = 1;
-			 cout<< "please enter the runlength";
+		 {			 
+			 OrderMaker *orm = new OrderMaker();			 		 
+			 orm->ADDSortingAtt(createTableType->sortedAttList, s);			
+			 int runlen =1;
+			 cout<<endl<< "please enter the runlength"<<endl;
 			 cin >> runlen;
-			 Record literal;	
-			 CNF sort_pred;
-			 sort_pred.GrowFromParseTree(createTableType->sortingAtts, myrel->schema(), literal); // constructs CNF predicate based on sorting attributes
-			 OrderMaker sortorder;
-			 OrderMaker dummy;
-			 sort_pred.GetSortOrders(sortorder, dummy);			 
-			 struct { OrderMaker *o; int l; } startup = { &sortorder, runlen };
+			 struct { OrderMaker *o; int l; } startup = { orm, runlen };			 
 			 dbfile.Create(myrel->path(), sorted, &startup);
 			 createdrelationlist[relationName] = myrel;
 			 dbfile.Close();
@@ -645,34 +815,18 @@ void queryExecution()
 		 dbfile.Open(myrel->path());
 		 dbfile.Load(*(myrel->schema()), tbl_path);
 		 dbfile.Close();
-
-		 // Check whether data loaded correctly
-		 /*cout << endl << "Reading back data to check" << endl;
-		 Record temp;
-		 dbfile.Open(myrel->path());
-		 dbfile.MoveFirst();
-		 int counter = 0;
-		 while (dbfile.GetNext(temp) == 1) {
-			 counter += 1;
-			 temp.Print(myrel->schema());
-			 if (counter % 10000 == 0)
-			 {
-				 out << counter << "\n";
-			 }
-		 }
-		 out.flush();
-		 dbfile.Close();*/
+		
 	 }
 	 
  }
  void DropATable()
  {
 	 char *relName = tables->tableName;// outputFileName->name
-		if (!createdrelationlist.count(relName))
-		{
-		 cout << "The table doesn't exist. Cannot drop." << endl;
-		 return;
-		}
+	if (!createdrelationlist.count(relName))
+	{
+		cout << "The table doesn't exist. Cannot drop." << endl;
+		return;
+	}
 	 relation *myrel = createdrelationlist[relName];
 	 char db_path[100]; // construct path of the tpch flat textfile
 	 char db_bin[100];
@@ -685,13 +839,13 @@ void queryExecution()
 	 if (remove(db_path) != 0)
 	 {
 		 perror("Cannot delete .bin.meta");
-	 }
-	 DBinfo.erase(relName);
+	 }	
 	 delete myrel;
 	 cout << "Table Dropp Sucessfull" << endl;
 	 
 	 createdrelationlist.erase(relName);
-	 UpdateSavedstate();	 
+	 UpdateSavedstate();	
+	 updateCatalog(relName);
  }
  
 
@@ -699,24 +853,10 @@ void queryExecution()
 int main () 
 {	
 
-	setup();	
-	/*ofstream outpu;
-	outpu.open(Savedstate);
-
-
-	outpu << "nation" << endl;
-	outpu << "part" << endl;
-	outpu << "supplier" << endl;
-	outpu << "partsupp" << endl;
-	outpu << "customer" << endl;
-	outpu << "orders" << endl;
-	outpu << "lineitem" << endl;
-
-	outpu.close();*/
+	setup();
+	bool exi = true;
 	ifstream infile;
-	char db_sting[100]; // construct path of the saved state file
-	//sprintf(db_sting, "%s%s", "/mnt/c/Users/agarw/Documents/DB2/" , Savedstate);
-	//cout << db_sting;
+	char db_sting[100];
 	infile.open(Savedstate);
 	 string val;
 	relation *myrel;
@@ -726,34 +866,47 @@ int main ()
 		createdrelationlist.insert({ val,myrel});
 		//cout << "realtions created";
 	}
-	while (1)
+	while (exi)
 	{
-		cout <<endl<< "1::Create Table" << endl;
-		cout << "2::Insert Into" << endl;
-		cout << "3::Drop A Table" << endl;
-		cout << "4::SetOutPut" << endl;
-		cout << "5::Run Sum Query" << endl;
-		cout << "6::Close" << endl<<endl;
+	
+		
+		
+		cout <<endl<< "			1::Create Table" << endl;
+		cout << "			2::Insert Into" << endl;
+		cout << "			3::Drop A Table" << endl;
+		cout << "			4::SetOutPut" << endl;
+		cout << "			5::Run Sum Query" << endl;
+		cout << "			6::Close" << endl<<endl<<endl;
 
-		int x;
-		cin >> x;
+		cout << "Enter the option number" << endl;
+		int option;
+		cin >> option;
 
-		cout << "Enter the sequence number"<<endl;
-		yyparse();
-		switch (x)
+		switch (option)
 		{
-			case 1: CreateTable();
+			case 1: cout << endl << "Enter the query to create table" << endl;
+				yyparse();
+				CreateTable();
 				break;
 			case 2:
+				cout << endl << "Enter the insert query" << endl;
+				yyparse();
 				InsertIntoTable();
 				break;
 			case 3:
+				cout << endl << "Enter the Drop Query" << endl;
+				yyparse();
 				DropATable();
 				break;
-			case 4:
-				
+			case 4:	
+				cout << endl << "SET OUTPUT" << endl;
+				yyparse();
+
 				break;
 			case 5:
+				cout << endl << "Enter the SQL query" << endl;
+				yyparse();
+
 				if (strcmp(OutFileName,"NONE")==0)
 				{
 					cout << OutFileName;
@@ -762,13 +915,14 @@ int main ()
 				}
 				RunQuery();
 				queryExecution();
+				
 				break;
 			case 6:
 				UpdateSavedstate();
-				exit(1);
+				exit(0);
 				break;
-			}
-	}
+		}
+	}	
 }
 
 

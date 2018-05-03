@@ -20,6 +20,7 @@ void *worker(void *arg)
 	BigQ b_queue(*(t->in), *(t->out), (t->order), t->runLength);
 }
 
+
 int SortedFile::Close()
 {
 	if (mode == Write) {
@@ -102,6 +103,8 @@ int SortedFile::GetNext(Record & fetchme)
 	{
 		Record *x = read_page->gettherecord();
 		fetchme.Copy(x);
+		x = NULL;
+		delete x;
 		return 1;
 	}
 	else if (++cur_page <= genericFile->lastIndex())
@@ -111,6 +114,8 @@ int SortedFile::GetNext(Record & fetchme)
 		read_page->settherecord();
 		Record *x = read_page->gettherecord();
 		fetchme.Copy(x);
+		x = NULL;
+		delete x;
 		return 1;
 	}
 	return 0;
@@ -233,6 +238,7 @@ void SortedFile::merge() {
 			if ((fileNotEmpty && pipeNotEmpty) && ce.Compare(&fromFile, &fromPipe, myOrder) > 0) {
 				newcount++;
 				tmp->Add(fromPipe);
+
 				pipeNotEmpty = outputpipe->Remove(&fromPipe);
 			}
 			else if ((fileNotEmpty && pipeNotEmpty) && ce.Compare(&fromFile, &fromPipe, myOrder) <= 0)
@@ -267,8 +273,8 @@ void SortedFile::merge() {
 	cout << newcount<<endl;
 	//memory issue happend beacuse of new page in add no issues here remember.
 	//remove()
-	//genericFile->Close();
-	//remove(pathoffile);
+	genericFile->Close();
+	remove(pathoffile);
 	rename(a, pathoffile);
 	outputpipe->ShutDown();
 
@@ -519,7 +525,11 @@ SortedFile::~SortedFile()
 	delete genericFile;
 	delete read_page;
 	delete write_page;
-	//delete outpipefile;
+	delete outpipefile;
+	delete inputpipe;
+	delete outpipefile;
+	delete heapDB;
+	delete bigqinstance;
 	
 }
 
